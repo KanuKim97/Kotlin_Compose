@@ -26,28 +26,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jungomarket.R
 import com.example.jungomarket.R.drawable
-import com.example.jungomarket.featuredSection
 import com.example.jungomarket.standardQuadFromTo
 
 @ExperimentalFoundationApi
 @Composable
-fun homeScreen() {
+fun HomeScreen() {
     Box(
        modifier = Modifier
            .background(Color(0xff06164c))
            .fillMaxSize()
     ) {
         Column {
-            greetingSection()
+            GreetingSection()
             chipSection(chips = listOf("Sweet Sleep", "Insomnia", "Depression"))
             currentMeditation()
             featureSection(
                 features = listOf(
                     featuredSection(
                         title = "Sleep meditation",
-                        R.drawable.ic_headphone,
+                        drawable.ic_headphone,
                         Color(0xffaeb4fd),
                         Color(0xff9fa5fe),
                         Color(0xff8f98fd)
@@ -55,7 +53,7 @@ fun homeScreen() {
 
                     featuredSection(
                         title = "Tips for sleeping",
-                        R.drawable.ic_videocam,
+                        drawable.ic_videocam,
                         Color(0xff54e1b6),
                         Color(0xff36ddab),
                         Color(0xff11d79b)
@@ -63,7 +61,7 @@ fun homeScreen() {
 
                     featuredSection(
                         title = "Night island",
-                        R.drawable.ic_headphone,
+                        drawable.ic_headphone,
                         Color(0xfff0bd28),
                         Color(0xfff1c746),
                         Color(0xfff4cf65)
@@ -71,7 +69,7 @@ fun homeScreen() {
 
                     featuredSection(
                         title = "Calming Sounds",
-                        R.drawable.ic_headphone,
+                        drawable.ic_headphone,
                         Color(0xfffdbda1),
                         Color(0xfffcaf90),
                         Color(0xfff9a27b)
@@ -81,11 +79,19 @@ fun homeScreen() {
             )
         }
 
+        bottomMenu(items = listOf(
+            bottomMenuContent("Home", drawable.ic_home),
+            bottomMenuContent("Meditation", drawable.ic_bubble),
+            bottomMenuContent("Sleep", drawable.ic_sleep),
+            bottomMenuContent("Music", drawable.ic_headphone),
+            bottomMenuContent("Profile", drawable.ic_profile)
+        ), modifier = Modifier.align(Alignment.BottomCenter))
+
     }
 }
 
 @Composable
-fun greetingSection(
+fun GreetingSection(
     name: String = "Kanu!"
 ) {
     Row(
@@ -318,13 +324,81 @@ fun featureItem(
 }
 
 @Composable
-fun bottomMenu(){
+fun bottomMenu(
+    items: List<bottomMenuContent>,
+    modifier: Modifier = Modifier,
+    activeHighlightColor: Color = Color(0xff505cf3),
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = Color(0xff9aa5c4),
+    initialSelectedItemIndex: Int = 0
+){
+    var selectedItemIndex by remember {
+        mutableStateOf(initialSelectedItemIndex)
+    }
 
+    Row (
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color(0xff06164c))
+            .padding(15.dp)
+    ) {
+        items.forEachIndexed { index, item ->
+            bottomMenuItem(
+                item = item,
+                isSelected = index == selectedItemIndex,
+                activeHighColor = activeHighlightColor,
+                activeTextColor = activeTextColor,
+                inactiveTextColor = inactiveTextColor
+            ) {
+                selectedItemIndex = index
+            }
+        }
+    }
+}
+
+@Composable
+fun bottomMenuItem(
+    item : bottomMenuContent,
+    isSelected: Boolean = false,
+    activeHighColor: Color = Color(0xff505cf3),
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = Color(0xff9aa5c4),
+    onItemClick: () -> Unit
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.clickable {
+            onItemClick()
+        }
+    ) {
+        Box (
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (isSelected) activeHighColor else Color.Transparent)
+                .padding(10.dp)
+        ){
+            Icon(
+                painter = painterResource(id = item.iconId),
+                contentDescription = item.title,
+                tint = if(isSelected) activeTextColor else inactiveTextColor,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Text(
+            text = item.title,
+            color = if(isSelected) activeTextColor else inactiveTextColor
+        )
+
+    }
 }
 
 @ExperimentalFoundationApi
 @Preview
 @Composable
 fun preview(){
-    homeScreen()
+    HomeScreen()
 }

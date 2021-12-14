@@ -1,4 +1,4 @@
-package com.example.jungomarket
+package com.example.jungomarket.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
