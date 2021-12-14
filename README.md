@@ -1,5 +1,5 @@
 # Kotlin_Compose
- 
+ ![Complete Image](https://user-images.githubusercontent.com/74421057/146005354-3403ddeb-5548-4848-baa1-fc499874a72a.png)
  ## Description
   - Android Jetpack의 Compose 학습용 Repository 입니다.
   - Clone Coding Project 입니다.
@@ -30,4 +30,3 @@
     [Android Jetpack Documentation]
     https://developer.android.com/jetpack/compose/documentation
   ```
-   
